@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+env/
+
+# Runtime data
+app.db
+*.db
+uploads/*
+!uploads/.gitkeep
+
+# Env
+.env
