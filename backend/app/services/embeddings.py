@@ -18,9 +18,9 @@ _model = None
 def _get_model():
     global _model
     if _model is None:
-        from sentence_transformers import SentenceTransformer
+        from fastembed import TextEmbedding
 
-        _model = SentenceTransformer("all-MiniLM-L6-v2")
+        _model = TextEmbedding("sentence-transformers/all-MiniLM-L6-v2")
     return _model
 
 
@@ -28,8 +28,11 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
     """Returns one embedding vector (list of floats) per input text."""
     if not texts:
         return []
+    import numpy as np
+
     model = _get_model()
-    vectors = model.encode(texts, convert_to_numpy=True, normalize_embeddings=True)
+    vectors = np.array(list(model.embed(texts)))
+    vectors = vectors / np.linalg.norm(vectors, axis=1, keepdims=True)
     return vectors.tolist()
 
 

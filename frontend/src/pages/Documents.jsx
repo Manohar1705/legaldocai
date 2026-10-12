@@ -52,8 +52,11 @@ export default function Documents() {
       try {
         const data = await listDocuments();
         setDocuments(data);
-      } catch {
-        // Silent — the next successful poll will recover the view.
+      } catch (err) {
+        if (err.response?.status === 401) {
+          clearInterval(timer);
+          window.location.href = "/login";
+        }
       }
     }, POLL_INTERVAL_MS);
 
